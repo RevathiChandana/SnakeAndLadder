@@ -2,20 +2,28 @@
 echo "==========Snake and Ladder=========="
 startPosition=0;
 endPosition=100;
-pointOfGame=$((1+$(($RANDOM%6))))
 function snakeAndLadder(){
+	while [ $startPosition -ne $endPosition ]
+	do
+	dieNumber=$((1+$(($RANDOM%6))))
 	case $(($RANDOM%3)) in
-		0) echo "No Play"
-			echo "player position	-	$startPosition";;
-		1) echo "player get ladder";
-			startPosition=$(($startPosition+$pointOfGame));
-			echo "player position	-	$startPosition";;
-		2)	echo "player get snake";
-			if [[ $startPOsition -ge $pointOfGame ]]
+		0) echo "No play($dieNumber)  	-	player position	-	$startPosition";;
+		1) pointOfGame=$(($startPosition+$dieNumber));
+			if [[	$pointOfGame -eq $endPosition ]]
 			then
-				startPosition=$(($startPosition-$pointOfGame));
+				echo "getLadder($dieNumber)   -  player position   -  $pointOfGame";
+				echo "the player wins";exit;
+			elif [[ $pointOfGame -lt $endPosition ]]
+			then
+				startPosition=$pointOfGame;
 			fi
-			echo "player position	-	$startPosition"
+			echo "getLadder($dieNumber)	-	player position	-	$startPosition";;
+		2)	if [[ $startPosition -ge $dieNumber ]]
+			then
+				startPosition=$(($startPosition-$dieNumber));
+			fi
+			echo "getSanke($dieNumber)	-	player position	-	$startPosition"
 	esac
+	done
 }
 snakeAndLadder
