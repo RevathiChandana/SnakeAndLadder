@@ -2,6 +2,7 @@
 echo "==========Snake and Ladder=========="
 START_POSITION=0;
 END_POSITION=100;
+DICE_COUNT=0;
 function snakeAndLadder(){
 	dieNumber=$((1+$(($RANDOM%6))))
 	case $(($RANDOM%3)) in
@@ -11,6 +12,7 @@ function snakeAndLadder(){
 			then
 				echo "getLadder($dieNumber)   -  player position   -  $pointOfGame";
 				echo "the player wins";
+				echo "number of times the dice throws : $DICE_COUNT"
 				exit;
 			elif [[ $pointOfGame -lt $END_POSITION ]]
 			then
@@ -24,6 +26,7 @@ function snakeAndLadder(){
 			fi
 			echo "getSanke($dieNumber)	-	player position	-	$START_POSITION"
 	esac
+	((DICE_COUNT++))
 }
 while [ $START_POSITION -ne $END_POSITION ]
 do
