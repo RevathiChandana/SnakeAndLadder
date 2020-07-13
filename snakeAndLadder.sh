@@ -2,7 +2,7 @@
 echo "==========Snake and Ladder=========="
 START_POSITION=0;
 END_POSITION=100;
-pointOfGame=$((1+$(($RANDOM%6))))
+pointOfGame=$((1+$(($RANDOM%6))));
 function snakeAndLadder(){
 	case $(($RANDOM%3)) in
 		0) echo "No Play"
