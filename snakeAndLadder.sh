@@ -1,4 +1,4 @@
 #! /bin/bash
 echo "==========Snake and Ladder=========="
-startPosition=0;
-endPosition=100;
+START_POSITION=0;
+END_POSITION=100;
