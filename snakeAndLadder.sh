@@ -17,7 +17,8 @@ function snakeAndLadder(){
 				START_POSITION=$pointOfGame;
 			fi
 			echo "getLadder($dieNumber)	-	player position	-	$START_POSITION";
-			echo "play again ";snakeAndLadder;;
+			echo "play again ";
+			snakeAndLadder;;
 		2)	if [[ $START_POSITION -ge $dieNumber ]]
 			then
 				START_POSITION=$(($START_POSITION-$dieNumber));
