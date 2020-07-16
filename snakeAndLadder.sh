@@ -2,47 +2,50 @@
 echo "==========Snake and Ladder=========="
 START_POSITION=0;
 END_POSITION=100;
-NUM_PLAYERS=2
-function snakeAndLadder(){
-	dieNumber=$((1+$(($RANDOM%6))))
-	case $(($RANDOM%3)) in
-		0) echo "No play($dieNumber)	-	player$player position	-	$START_POSITION";;
-		1) pointOfGame=$(($START_POSITION+$dieNumber));
-			if [[	$pointOfGame -eq $END_POSITION ]]
-			then
-				echo "getLadder($dieNumber)	-	player$player position   -  $pointOfGame";
-				START_POSITION=$pointOfGame;
-			elif [[ $pointOfGame -lt $END_POSITION ]]
-			then
-				START_POSITION=$pointOfGame;
-				echo "getLadder($dieNumber)	-	player$player position	-	$START_POSITION";
-				echo "play again ";
-				snakeAndLadder
-			fi;;
-		2)	if [[ $START_POSITION -ge $dieNumber ]]
-			then
-				START_POSITION=$(($START_POSITION-$dieNumber));
-				echo "getSanke($dieNumber)	-	player$player position	-	$START_POSITION"
-			fi
-	esac
-	((DICE_COUNT++))
+function ladder(){
+   pointOfGame=$(($1+$2));
+   if [[ $pointOfGame -eq $END_POSITION ]]
+   then
+      START_POSITION=$pointOfGame;
+   elif [[ $pointOfGame -lt $END_POSITION ]]
+   then
+      START_POSITION=$pointOfGame;
+      snakeAndLadder $START_POSITION
+   else
+      START_POSITION=$1;
+      snakeAndLadder $START_POSITION
+   fi
 }
-for ((player=1;player<=NUM_PLAYERS;player++))
-do
-	DICE_COUNT=0;
-	START_POSITION=0;
-	while [[ $START_POSITION -ne $END_POSITION ]]
-	do
-			snakeAndLadder;
-	done
-	echo "number of times the player$player dice throws : $DICE_COUNT"
-	array[$player]=$DICE_COUNT;
-done
-echo "number of times player1 and player2 throws dice : ${array[@]}"
-if [[ ${array[1]} -gt ${array[2]} ]]
-then
-	echo "player2 won the game"
-else
-	echo "player1 won the game"
-fi
-
+function snake(){
+   if [[ $1 -ge $2 ]]
+   then
+      START_POSITION=$(($1-$2));
+   else
+      START_POSITION=$1
+   fi
+}
+function snakeAndLadder(){
+   dieNumber=$((1+$(($RANDOM%6))))
+   case $(($RANDOM%3)) in
+      0) START_POSITION=$1;;
+      1) ladder $1 $dieNumber;;
+      2) snake $1 $dieNumber;;
+   esac
+}
+function game(){
+   player1=0;player2=0;count=0;
+   while [[ $player1 -ne $END_POSITION && $player2 -ne $END_POSITION ]]
+   do
+      if [[ $(($count%2)) -eq 0 ]]
+      then
+         snakeAndLadder $player1
+         player1=$START_POSITION;
+      else
+         snakeAndLadder $player2
+         player2=$START_POSITION;
+      fi
+      echo "player1: $player1    player2: $player2"
+      ((count++))
+   done
+  }
+game
